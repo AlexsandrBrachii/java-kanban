@@ -1,5 +1,9 @@
+package Man;
+
 import java.util.ArrayList;
-import java.util.Scanner;
+import Tasks.Task;
+import Tasks.Epic;
+import Tasks.SubTask;
 
 public class Main {
 
@@ -15,19 +19,20 @@ public class Main {
         Integer subTask2 = m.addSubTask(new SubTask("name st2", "desc st2", "NEW", epic1));
 
         Integer epic2 = m.addEpic(new Epic("name epic2", "desc epic2", "NEW", new ArrayList<>()));
-        Integer subTask3 = m.addSubTask(new SubTask("name st3", "desc st3", "NEW", epic2));
+        Integer subTask3 = m.addSubTask(new SubTask("name st3", "desc st3", "DONE", epic2));
 
         System.out.println(m.getTasks());
         System.out.println(m.getEpics());
         System.out.println(m.getSubTasks());
 
-        Task newT = m.tasks.get(task1);
-        m.updateTask(newT);
+        Task newT = m.getTasks().get(task1);
+        m.updateStatusTask(newT);
 
-        SubTask newST = m.subTasks.get(subTask3);
-        m.updateSubTask(newST);
+        SubTask newST = m.getSubTasks().get(subTask3);
+        m.updateStatusSubTask(newST);
 
-        m.deleteTasks(epic1);
+        m.deleteSubTask(subTask2);
+        m.deleteEpic(epic2);
 
         System.out.println("После операций");
 

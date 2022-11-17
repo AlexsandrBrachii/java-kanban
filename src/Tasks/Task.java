@@ -1,28 +1,26 @@
-import java.util.ArrayList;
-import java.util.HashMap;
+package Tasks;
 
-public class Epic {
+public class Task {
 
     private String name;            // название
     private String description;     // описание
     private String status;          // статус
-    ArrayList<Integer> idSubTask;
+    private Integer id;
 
-    public Epic() {
+    public Task() {
     }
 
-    public Epic(String name, String description, String status, ArrayList<Integer> idSubTask) {
+    public Task(String name, String description, String status) {
         this.name = name;
         this.description = description;
         this.status = status;
-        this.idSubTask = idSubTask;
     }
 
-
-    public Epic(String name, String description, String status) {
+    public Task(String name, String description, String status, Integer id) {
         this.name = name;
         this.description = description;
         this.status = status;
+        this.id = id;
     }
 
     public String getName() {
@@ -49,13 +47,22 @@ public class Epic {
         this.status = status;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     @Override
     public String toString() {
-        return "Epic{" +
-                ", name='" + this.getName() + '\'' +
-                ", description='" + this.getDescription() + '\'' +
-                ", status='" + this.getStatus() + '\'' +
-                ", idSubTask='" + idSubTask + '\'' +
+        return "Task{" +
+                "name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", status='" + status + '\'' +
+                ", id='" + id + '\'' +
                 '}';
     }
 }
+
