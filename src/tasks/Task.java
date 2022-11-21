@@ -1,14 +1,11 @@
-package Tasks;
+package tasks;
 
 public class Task {
 
-    private String name;            // название
-    private String description;     // описание
-    private String status;          // статус
+    private String name;
+    private String description;
+    private String status;
     private Integer id;
-
-    public Task() {
-    }
 
     public Task(String name, String description, String status) {
         this.name = name;
@@ -16,11 +13,11 @@ public class Task {
         this.status = status;
     }
 
-    public Task(String name, String description, String status, Integer id) {
+    public Task(Integer id, String name, String description, String status) {
+        this.id = id;
         this.name = name;
         this.description = description;
         this.status = status;
-        this.id = id;
     }
 
     public String getName() {
@@ -58,10 +55,10 @@ public class Task {
     @Override
     public String toString() {
         return "Task{" +
+                ", id='" + id + '\'' +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
-                ", id='" + id + '\'' +
                 '}';
     }
 }
