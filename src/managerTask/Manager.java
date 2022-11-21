@@ -46,33 +46,15 @@ public class Manager {
     }
 
     public Task getTaskById(int id) {
-
-        Task task = null;
-
-        if (tasks.get(id) != null) {
-            task = tasks.get(id);
-        }
-        return task;
+        return tasks.get(id);
     }
 
     public Epic getEpicById(int id) {
-
-        Epic epic = null;
-
-        if (epics.get(id) != null) {
-            epic = epics.get(id);
-        }
-        return epic;
+        return epics.get(id);
     }
 
     public SubTask getSubTaskById(int id) {
-
-        SubTask subTask = null;
-
-        if (subTasks.get(id) != null) {
-            subTask = subTasks.get(id);
-        }
-        return subTask;
+        return subTasks.get(id);
     }
 
     public Integer addNewTask(Task task) {
@@ -91,11 +73,11 @@ public class Manager {
 
     public Integer addNewSubTask(SubTask subTask) {
 
-        int idEpic = subTask.getIdEpic();
-        Epic epic = epics.get(idEpic);
+        Epic epic = epics.get(subTask.getIdEpic());
         subTask.setId(++identifier);
         subTasks.put(identifier, subTask);
         epic.getIdSubTask().add(subTask.getId());
+        epics.put(epic.getId(), epic);
         return identifier;
     }
 
@@ -103,8 +85,7 @@ public class Manager {
 
         if (task.getId() != null) {
             if (tasks.containsKey(task.getId())) {
-                int id = task.getId();
-                tasks.put(id, task);
+                tasks.put(task.getId(), task);
             }
         }
     }
@@ -113,14 +94,14 @@ public class Manager {
 
         Epic epic = epics.get(id);
         int sumDone = 0;
-        int sumInPro = 0;
+        int sumNew = 0;
         if (!(epic.getIdSubTask().isEmpty())) {
             for (Integer keySubTask : epic.getIdSubTask()) {
                 SubTask subTask = subTasks.get(keySubTask);
                 if (subTask.getStatus().equals("DONE")) {
                     sumDone++;
-                } else if (subTask.getStatus().equals("IN_PROGRESS")) {
-                    sumInPro++;
+                } else if (subTask.getStatus().equals("NEW")) {
+                    sumNew++;
                 }
             }
         }
@@ -128,21 +109,18 @@ public class Manager {
         if (sumDone == epic.getIdSubTask().size() && sumDone != 0) {
             epic.setStatus("DONE");
             epics.put(id, epic);
-        } else if (sumInPro <= epic.getIdSubTask().size() && sumInPro != 0) {
-            epic.setStatus("IN_PROGRESS");
+        } else if (sumNew == epic.getIdSubTask().size() && sumNew != 0) {
+            epic.setStatus("NEW");
             epics.put(id, epic);
         } else {
-            epic.setStatus("NEW");
+            epic.setStatus("IN_PROGRESS");
             epics.put(id, epic);
         }
     }
 
     public void updateSubTask(SubTask subTask) {
 
-        if (epics.get(subTask.getIdEpic()) == null) {
-            return;
-        }
-        if (subTasks.containsKey(subTask.getId())) {
+        if (epics.get(subTask.getIdEpic()) != null && subTasks.containsKey(subTask.getId())) {
             subTasks.put(subTask.getId(), subTask);
             updateStatusEpic(subTask.getIdEpic());
         }
