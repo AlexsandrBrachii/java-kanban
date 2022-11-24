@@ -4,16 +4,16 @@ public class Task {
 
     private String name;
     private String description;
-    private Enum status;
+    private Status status;
     private Integer id;
 
-    public Task(String name, String description, Enum status) {
+    public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
     }
 
-    public Task(Integer id, String name, String description, Enum status) {
+    public Task(Integer id, String name, String description, Status status) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -36,11 +36,11 @@ public class Task {
         this.description = description;
     }
 
-    public Enum getStatus() {
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(Enum status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 
@@ -56,7 +56,7 @@ public class Task {
     public String toString() {
         return "Task{" +
                 ", id='" + id + '\'' +
-                "name='" + name + '\'' +
+                ", name='" + name + '\'' +
                 ", description='" + description + '\'' +
                 ", status='" + status + '\'' +
                 '}';
