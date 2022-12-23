@@ -5,7 +5,7 @@ import history.InMemoryHistoryManager;
 import managerTask.TaskManager;
 import managerTask.InMemoryTaskManager;
 
-public class Managers {
+public class UtilManagers {
 
     public static TaskManager getDefault() {
         return new InMemoryTaskManager();

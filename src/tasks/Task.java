@@ -52,14 +52,16 @@ public class Task {
         this.id = id;
     }
 
+
     @Override
     public String toString() {
-        return "Task{" +
-                ", id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", status='" + status + '\'' +
-                '}';
+        return id +
+                "," + Type.TASK +
+                "," + name +
+                "," + status +
+                "," + description;
     }
+
+
 }
 

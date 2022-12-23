@@ -3,7 +3,7 @@ package tasks;
 public class SubTask extends Task {
 
 
-    private Integer idEpic;
+    private static Integer idEpic;
 
 
     public SubTask(Integer id, String name, String description, Status status, Integer idEpic) {
@@ -16,7 +16,7 @@ public class SubTask extends Task {
         this.idEpic = idEpic;
     }
 
-    public Integer getIdEpic() {
+    public static Integer getIdEpic() {
         return idEpic;
     }
 
@@ -26,13 +26,12 @@ public class SubTask extends Task {
 
     @Override
     public String toString() {
-        return "SubTask{" +
-                "id='" + getId() + '\'' +
-                ", name='" + getName() + '\'' +
-                ", description='" + getDescription() + '\'' +
-                ", status='" + getStatus() + '\'' +
-                ", idEpic='" + getIdEpic() + '\'' +
-                '}';
+        return  getId() +
+                "," + Type.SUBTASK +
+                "," + getName() +
+                "," + getStatus() +
+                "," + getDescription() +
+                "," + getIdEpic();
     }
 }
 
