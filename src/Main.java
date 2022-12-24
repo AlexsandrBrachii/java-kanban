@@ -1,4 +1,4 @@
-/*
+import java.io.IOException;
 import java.util.ArrayList;
 
 import managerTask.InMemoryTaskManager;
@@ -9,7 +9,7 @@ import tasks.SubTask;
 
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         InMemoryTaskManager taskManager = new InMemoryTaskManager();
 
@@ -51,4 +51,3 @@ public class Main {
 
 
 
-*/

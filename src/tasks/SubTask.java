@@ -25,13 +25,16 @@ public class SubTask extends Task {
     }
 
     @Override
+
     public String toString() {
-        return  getId() +
-                "," + Type.SUBTASK +
-                "," + getName() +
-                "," + getStatus() +
-                "," + getDescription() +
-                "," + getIdEpic();
+
+        return "SubTask{" +
+                "id='" + getId() + '\'' +
+                ", name='" + getName() + '\'' +
+                ", description='" + getDescription() + '\'' +
+                ", status='" + getStatus() + '\'' +
+                ", idEpic='" + getIdEpic() + '\'' +
+                '}';
     }
 }
 

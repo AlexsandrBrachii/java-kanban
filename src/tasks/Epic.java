@@ -30,15 +30,17 @@ public class Epic extends Task {
     }
 
 
-
     @Override
+
     public String toString() {
-        return  getId() +
-                "," + Type.EPIC +
-                "," + this.getName() +
-                "," + this.getStatus() +
-                "," + this.getDescription() +
-                "," + idSubTask;
+
+        return "Epic{" +
+                "id='" + getId() + '\'' +
+                ", name='" + this.getName() + '\'' +
+                ", description='" + this.getDescription() + '\'' +
+                ", status='" + this.getStatus() + '\'' +
+                ", idSubTask='" + idSubTask + '\'' +
+                '}';
     }
 }
 

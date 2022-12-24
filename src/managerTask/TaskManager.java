@@ -1,6 +1,5 @@
 package managerTask;
 
-import dataFile.ManagerSaveException;
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
@@ -13,11 +12,11 @@ public interface TaskManager {
 
     List<Task> getHistory();
 
-    ArrayList<String> getListWithTasks();
+    ArrayList<Task> getListWithTasks();
 
-    ArrayList<String> getListWithEpics();
+    ArrayList<Task> getListWithEpics();
 
-    ArrayList<String> getListWithSubTasks();
+    ArrayList<Task> getListWithSubTasks();
 
     void deleteAllTasks() throws IOException, ManagerSaveException;
 
