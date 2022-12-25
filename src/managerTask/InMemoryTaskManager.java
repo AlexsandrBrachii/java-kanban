@@ -16,7 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected HashMap<Integer, Task> tasks = new HashMap<>();
     protected HashMap<Integer, Epic> epics = new HashMap<>();
     protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
-    public Integer identifier = 1;
+    protected Integer identifier = 1;
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
 
@@ -26,7 +26,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Task getTaskById(int id) throws IOException {
+    public Task getTaskById(int id) {
 
         Task task = null;
 
@@ -38,7 +38,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Epic getEpicById(int id) throws IOException {
+    public Epic getEpicById(int id) {
 
         Epic epic = null;
 
@@ -50,7 +50,7 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public SubTask getSubTaskById(int id) throws IOException {
+    public SubTask getSubTaskById(int id) {
 
         SubTask subTask = null;
 

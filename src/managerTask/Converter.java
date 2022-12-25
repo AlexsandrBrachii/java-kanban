@@ -1,8 +1,10 @@
 package managerTask;
 
+import history.HistoryManager;
 import tasks.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Converter extends InMemoryTaskManager{
 
@@ -69,6 +71,18 @@ public class Converter extends InMemoryTaskManager{
         }
         return task;
     }
+
+    protected static String historyToString(HistoryManager manager) {
+
+        List<Task> taskList = manager.getHistory();
+        StringBuilder line = new StringBuilder();
+
+        for (Task task : taskList) {
+            line.append(task.getId()).append(",");
+        }
+        return line.toString();
+    }
+
 
 
 }
