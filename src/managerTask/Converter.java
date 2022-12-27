@@ -6,7 +6,17 @@ import tasks.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Converter extends InMemoryTaskManager{
+public class Converter extends InMemoryTaskManager {
+
+    protected static List<Integer> historyFromString(String value) {
+
+        List<Integer> array = new ArrayList<>();
+
+        for (String number : value.split(",")) {
+            array.add(Integer.parseInt(number));
+        }
+        return array;
+    }
 
     protected static String objectToString(Task task) {
 
@@ -16,36 +26,56 @@ public class Converter extends InMemoryTaskManager{
         String name = task.getName();
         Status status = task.getStatus();
         String description = task.getDescription();
-        Type type;
-        Integer idEpic;
-        ArrayList<Integer> idSubTasks;
+        Type type = Type.TASK;
 
-        if (task instanceof Epic) {
-            type = Type.EPIC;
-            idSubTasks = new ArrayList<>(((Epic) task).idSubTask);
-            stringBuilder.append(id).append(",")
-                    .append(type).append(",")
-                    .append(name).append(",")
-                    .append(status).append(",")
-                    .append(description).append(",")
-                    .append(idSubTasks);
-        } else if (task instanceof SubTask) {
-            type = Type.SUBTASK;
-            idEpic = ((SubTask) task).getIdEpic();
-            stringBuilder.append(id).append(",")
-                    .append(type).append(",")
-                    .append(name).append(",")
-                    .append(status).append(",")
-                    .append(description).append(",")
-                    .append(idEpic);
-        } else {
-            type = Type.TASK;
-            stringBuilder.append(id).append(",")
-                    .append(type).append(",")
-                    .append(name).append(",")
-                    .append(status).append(",")
-                    .append(description);
-        }
+        stringBuilder.append(id).append(",")
+                .append(type).append(",")
+                .append(name).append(",")
+                .append(status).append(",")
+                .append(description);
+
+        return stringBuilder.toString();
+    }
+
+    protected static String objectToString(SubTask subTask) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        int id = subTask.getId();
+        String name = subTask.getName();
+        Status status = subTask.getStatus();
+        String description = subTask.getDescription();
+        Type type = Type.SUBTASK;
+        Integer idEpic = subTask.getIdEpic();
+
+        stringBuilder.append(id).append(",")
+                .append(type).append(",")
+                .append(name).append(",")
+                .append(status).append(",")
+                .append(description).append(",")
+                .append(idEpic);
+
+        return stringBuilder.toString();
+    }
+
+    protected static String objectToString(Epic epic) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        int id = epic.getId();
+        String name = epic.getName();
+        Status status = epic.getStatus();
+        String description = epic.getDescription();
+        Type type = Type.EPIC;
+        ArrayList<Integer> idSubTasks = new ArrayList<>(epic.idSubTask);
+
+        stringBuilder.append(id).append(",")
+                .append(type).append(",")
+                .append(name).append(",")
+                .append(status).append(",")
+                .append(description).append(",")
+                .append(idSubTasks);
+
         return stringBuilder.toString();
     }
 
@@ -82,7 +112,6 @@ public class Converter extends InMemoryTaskManager{
         }
         return line.toString();
     }
-
 
 
 }
