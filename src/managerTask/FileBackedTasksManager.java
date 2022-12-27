@@ -37,6 +37,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         Task task = a.getTaskById(task2);
         Epic epic = a.getEpicById(epic1);
 
+        FileBackedTasksManager b = new FileBackedTasksManager(new File("src/History.txt"));
     }
 
     private void save() {
@@ -71,7 +72,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
 
-    static FileBackedTasksManager loadFromFile(File file) {
+    public static FileBackedTasksManager loadFromFile(File file) {
         try {
             FileBackedTasksManager fileTasksManager = new FileBackedTasksManager();
             FileReader fileReader = new FileReader(file);
