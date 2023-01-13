@@ -1,20 +1,27 @@
 package tasks;
 
+import java.time.LocalDateTime;
+
 public class SubTask extends Task {
 
 
     private static Integer idEpic;
-
 
     public SubTask(Integer id, String name, String description, Status status, Integer idEpic) {
         super(id, name, description, status);
         this.idEpic = idEpic;
     }
 
-    public SubTask(String name, String description, Status status, Integer idEpic) {
-        super(name, description, status);
+    public SubTask(String name, String description, Status status, Integer idEpic, Integer duration, LocalDateTime startTime) {
+        super(name, description, status, duration, startTime);
         this.idEpic = idEpic;
     }
+
+    public SubTask(Integer id, String name, String description, Status status, Integer idEpic, Integer duration, LocalDateTime startTime) {
+        super(id, name, description, status, duration, startTime);
+        this.idEpic = idEpic;
+    }
+
 
     public static Integer getIdEpic() {
         return idEpic;
@@ -34,6 +41,8 @@ public class SubTask extends Task {
                 ", description='" + getDescription() + '\'' +
                 ", status='" + getStatus() + '\'' +
                 ", idEpic='" + getIdEpic() + '\'' +
+                ", duration='" + getDuration() + '\'' +
+                ", startTime='" + getStartTime() +
                 '}';
     }
 }

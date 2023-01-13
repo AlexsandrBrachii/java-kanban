@@ -32,9 +32,9 @@ public class InMemoryHistoryManager implements HistoryManager {
             size++;
         } else {
             oldTail.next = newNode;
+            nodes.put(id, newNode);
+            size++;
         }
-        nodes.put(id, newNode);
-        size++;
     }
 
     private ArrayList<Task> getTasks() {

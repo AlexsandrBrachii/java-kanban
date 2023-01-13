@@ -3,6 +3,7 @@ package managerTask;
 import tasks.*;
 
 import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,26 +27,37 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
         FileBackedTasksManager a = new FileBackedTasksManager(new File("src/History.txt"));
 
-        Integer task2 = a.addNewTask(new Task("task2", "desc task2", Status.NEW));
-        Integer task1 = a.addNewTask(new Task("task1", "desc task1", Status.NEW));
+        Integer task1 = a.addNewTask(new Task("name task1", "desc task1", Status.NEW,
+                60, LocalDateTime.of(2022, 1, 1, 1, 30)));
+        Integer task2 = a.addNewTask(new Task("name task2", "desc task2", Status.NEW,
+                60, LocalDateTime.of(2022, 3, 3, 12, 30)));
+        Integer task3 = a.addNewTask(new Task("name3", "desc3", Status.NEW,
+                60, LocalDateTime.of(2022, 2, 1, 1, 30)));
+
 
         Integer epic1 = a.addNewEpic(new Epic("name epic1", "desc epic1", Status.NEW, new ArrayList<>()));
-        Integer subTask1 = a.addNewSubTask(new SubTask("name st1", "desc st1", Status.NEW, epic1));
-        Integer subTask2 = a.addNewSubTask(new SubTask("name st2", "desc st2", Status.NEW, epic1));
-        Integer subTask3 = a.addNewSubTask(new SubTask("name st3", "desc st3", Status.NEW, epic1));
+        Integer subTask1 = a.addNewSubTask(new SubTask("name st1", "desc st1", Status.NEW, epic1,
+                60, LocalDateTime.of(2022, 4,1, 1, 30)));
+        Integer subTask2 = a.addNewSubTask(new SubTask("name st2", "desc st2", Status.NEW, epic1,
+                60, LocalDateTime.of(2022, 7, 1, 1, 15)));
+        Integer subTask3 = a.addNewSubTask(new SubTask("name st3", "desc st3", Status.NEW, epic1,
+                60, LocalDateTime.of(2022, 5, 5, 5, 30)));
 
         Task task = a.getTaskById(task2);
         Epic epic = a.getEpicById(epic1);
+        Epic epic2 = a.getEpicById(epic1);
 
         FileBackedTasksManager b = new FileBackedTasksManager(new File("src/History.txt"));
     }
 
-    private void save() {
+
+
+    public void save() {
         try {
             nameFile.delete();
             FileWriter fileWriter = new FileWriter(nameFile, true);
 
-            String firstLine = "id,type,name,status,description,epic";
+            String firstLine = "id,type,name,status,description,epic,duration,startTime,endTime";
             fileWriter.write(firstLine + System.lineSeparator());
 
             for (Task task : super.getListWithTasks()) {
@@ -71,7 +83,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         }
     }
 
-
     public static FileBackedTasksManager loadFromFile(File file) {
         try {
             FileBackedTasksManager fileTasksManager = new FileBackedTasksManager();
@@ -80,7 +91,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             String line;
 
             while ((line = bufferedReader.readLine()) != null) {
-                if (line.equals("") || line.equals("id,type,name,status,description,epic")) {
+                if (line.equals("") || line.equals("id,type,name,status,description,epic,duration,startTime,endTime")) {
                     continue;
                 } else if (line.matches("^[0-9,]+$")) {
                     ArrayList<Integer> historyList = new ArrayList<>(historyFromString(line));
@@ -131,7 +142,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             throw new ManagerSaveException("Exception when saving to file");
         }
     }
-
 
     @Override
     public Integer addNewTask(Task task) throws IOException {

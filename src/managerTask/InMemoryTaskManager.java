@@ -1,6 +1,8 @@
 package managerTask;
 
+import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.*;
 
 import history.HistoryManager;
@@ -17,8 +19,86 @@ public class InMemoryTaskManager implements TaskManager {
     protected HashMap<Integer, Epic> epics = new HashMap<>();
     protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
     protected Integer identifier = 1;
+    private Comparator<Task> comparator = new Comparator<Task>() {
+        @Override
+        public int compare(Task o1, Task o2) {
+            if (o1.getStartTime() == null && o2.getStartTime() == null) {
+                return o1.getId().compareTo(o2.getId());
+            } else if (o1.getStartTime() == null) {
+                return 1;
+            } else if (o2.getStartTime() == null) {
+                return -1;
+            } else {
+                int result = o1.getStartTime().compareTo(o2.getStartTime());
+                if (result == 0) {
+                    return o1.getId().compareTo(o2.getId());
+                }
+                return result;
+            }
+        }
+    };
+    TreeSet<Task> sortedSet = new TreeSet<>(comparator);
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
+
+
+    private TreeSet<Task> getPrioritizedTasks() {
+        return sortedSet;
+    }
+
+    private boolean isIntersection(Task task) {
+
+        LocalDateTime startTime = task.getStartTime();
+        LocalDateTime endTime;
+
+        if (startTime == null) {
+            return false;
+        }
+
+        endTime = task.getEndTime();
+
+        for (Task sortedTask : getPrioritizedTasks()) {
+            LocalDateTime sortedStartTime = sortedTask.getStartTime();
+            LocalDateTime sortedEndTime = sortedTask.getEndTime();
+            if (sortedStartTime == null || sortedEndTime == null) {
+                continue;
+            }
+
+            if ((startTime.isAfter(sortedStartTime) && startTime.isBefore(sortedEndTime))
+                    || (endTime.isAfter(sortedStartTime) && endTime.isBefore(sortedEndTime))
+                    || (startTime.isBefore(sortedStartTime) && endTime.isAfter(sortedStartTime))
+                    || (startTime.isBefore(sortedEndTime) && endTime.isAfter(sortedEndTime))
+                    || (startTime == sortedStartTime)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void countingTimeForEpic(Epic epic, SubTask subTask) {
+
+        if (epic.getDuration() == null) {
+            epic.setDuration(subTask.getDuration());
+        } else {
+            epic.setDuration(epic.getDuration() + subTask.getDuration());
+        }
+
+        if (epic.getStartTime() == null) {
+            epic.setStartTime(subTask.getStartTime());
+        } else if (epic.getStartTime() != null) {
+            if (epic.getStartTime().isAfter(subTask.getStartTime())) {
+                epic.setStartTime(subTask.getStartTime());
+            }
+        }
+
+        if (epic.getEndTime() == null) {
+            epic.setEndTime(subTask.getStartTime().plusMinutes(subTask.getDuration()));
+        } else if (epic.getEndTime() != null) {
+            if (epic.getEndTime().isBefore(subTask.getEndTime())) {
+                epic.setEndTime(subTask.getEndTime());
+            }
+        }
+    }
 
     @Override
     public List<Task> getHistory() {
@@ -99,10 +179,14 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public Integer addNewTask(Task task) throws IOException {
+    public Integer addNewTask(Task task) throws IOException{
 
         task.setId(++identifier);
         tasks.put(identifier, task);
+        if (isIntersection(task)) {
+            System.out.println("Эта задача пересекается по времени с другой задачей");
+        }
+        sortedSet.add(task);
         return identifier;
     }
 
@@ -120,8 +204,12 @@ public class InMemoryTaskManager implements TaskManager {
         Epic epic = epics.get(subTask.getIdEpic());
         subTask.setId(++identifier);
         subTasks.put(identifier, subTask);
-        epic.getIdSubTask().add(subTask.getId());
-        epics.put(epic.getId(), epic);
+        if (isIntersection(subTask)) {
+            System.out.println("Эта задача пересекается по времени с другой задачей");
+        }
+        sortedSet.add(subTask);
+        countingTimeForEpic(epic, subTask);
+        epic.idSubTask.add(subTask.getId());
         return identifier;
     }
 
@@ -237,6 +325,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 }
+
 
 
 
