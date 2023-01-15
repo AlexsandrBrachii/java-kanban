@@ -7,8 +7,12 @@ import tasks.Task;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeSet;
 
 public interface TaskManager {
+
+    void countingTimeForEpic(Epic epic);
+    TreeSet<Task> getPrioritizedTasks();
 
     List<Task> getHistory();
 
@@ -18,35 +22,35 @@ public interface TaskManager {
 
     ArrayList<Task> getListWithSubTasks();
 
-    void deleteAllTasks() throws IOException, ManagerSaveException;
+    void deleteAllTasks();
 
-    void deleteAllEpics() throws IOException, ManagerSaveException;
+    void deleteAllEpics();
 
-    void deleteAllSubTasks() throws IOException, ManagerSaveException;
+    void deleteAllSubTasks();
 
-    Task getTaskById(int id) throws IOException, ManagerSaveException;
+    Task getTaskById(int id);
 
-    Epic getEpicById(int id) throws IOException, ManagerSaveException;
+    Epic getEpicById(int id);
 
-    SubTask getSubTaskById(int id) throws IOException, ManagerSaveException;
+    SubTask getSubTaskById(int id);
 
-    Integer addNewTask(Task task) throws IOException, ManagerSaveException;
+    Integer addNewTask(Task task);
 
-    Integer addNewEpic(Epic epic) throws IOException, ManagerSaveException;
+    Integer addNewEpic(Epic epic);
 
-    Integer addNewSubTask(SubTask subTask) throws IOException, ManagerSaveException;
+    Integer addNewSubTask(SubTask subTask);
 
-    void updateTask(Task task) throws IOException, ManagerSaveException;
+    void updateTask(Task task);
 
-    void updateStatusEpic(int id) throws IOException, ManagerSaveException;
+    void updateStatusEpic(int id);
 
-    void updateSubTask(SubTask subTask) throws IOException, ManagerSaveException;
+    void updateSubTask(SubTask subTask);
 
-    void deleteTaskById(int id) throws IOException, ManagerSaveException;
+    void deleteTaskById(int id);
 
-    void deleteEpicById(int id) throws IOException, ManagerSaveException;
+    void deleteEpicById(int id);
 
-    void deleteSubTaskById(int id) throws IOException, ManagerSaveException;
+    void deleteSubTaskById(int id);
 
     ArrayList<SubTask> getAllSubTasksFromEpic(int idEpic);
 

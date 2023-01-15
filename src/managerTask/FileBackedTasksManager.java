@@ -3,6 +3,7 @@ package managerTask;
 import tasks.*;
 
 import java.io.*;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -23,29 +24,29 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
 
-    public static void main(String[] args) throws IOException, ManagerSaveException {
+    public static void main(String[] args) {
 
         FileBackedTasksManager a = new FileBackedTasksManager(new File("src/History.txt"));
 
         Integer task1 = a.addNewTask(new Task("name task1", "desc task1", Status.NEW,
-                60, LocalDateTime.of(2022, 1, 1, 1, 30)));
+                Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 1, 1, 30)));
         Integer task2 = a.addNewTask(new Task("name task2", "desc task2", Status.NEW,
-                60, LocalDateTime.of(2022, 3, 3, 12, 30)));
+                Duration.ofMinutes(60), LocalDateTime.of(2022, 3, 3, 12, 30)));
         Integer task3 = a.addNewTask(new Task("name3", "desc3", Status.NEW,
-                60, LocalDateTime.of(2022, 2, 1, 1, 30)));
+                Duration.ofMinutes(60), LocalDateTime.of(2022, 2, 1, 1, 30)));
 
 
         Integer epic1 = a.addNewEpic(new Epic("name epic1", "desc epic1", Status.NEW, new ArrayList<>()));
         Integer subTask1 = a.addNewSubTask(new SubTask("name st1", "desc st1", Status.NEW, epic1,
-                60, LocalDateTime.of(2022, 4,1, 1, 30)));
+                Duration.ofMinutes(60), LocalDateTime.of(2022, 4,1, 1, 30)));
         Integer subTask2 = a.addNewSubTask(new SubTask("name st2", "desc st2", Status.NEW, epic1,
-                60, LocalDateTime.of(2022, 7, 1, 1, 15)));
+                Duration.ofMinutes(60), LocalDateTime.of(2022, 7, 1, 1, 15)));
         Integer subTask3 = a.addNewSubTask(new SubTask("name st3", "desc st3", Status.NEW, epic1,
-                60, LocalDateTime.of(2022, 5, 5, 5, 30)));
+                Duration.ofMinutes(60), LocalDateTime.of(2022, 5, 5, 5, 30)));
 
         Task task = a.getTaskById(task2);
         Epic epic = a.getEpicById(epic1);
-        Epic epic2 = a.getEpicById(epic1);
+
 
         FileBackedTasksManager b = new FileBackedTasksManager(new File("src/History.txt"));
     }
@@ -57,26 +58,29 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             nameFile.delete();
             FileWriter fileWriter = new FileWriter(nameFile, true);
 
-            String firstLine = "id,type,name,status,description,epic,duration,startTime,endTime";
-            fileWriter.write(firstLine + System.lineSeparator());
+            if (!(super.getListWithTasks().isEmpty() && super.getListWithEpics().isEmpty() && super.getListWithSubTasks().isEmpty())) {
 
-            for (Task task : super.getListWithTasks()) {
-                fileWriter.write(objectToString(task) + "," + System.lineSeparator());
-            }
-            for (Task task : super.getListWithEpics()) {
-                fileWriter.write(objectToString((Epic) task) + "," + System.lineSeparator());
-            }
-            for (Task task : super.getListWithSubTasks()) {
-                fileWriter.write(objectToString((SubTask) task) + "," + System.lineSeparator());
-            }
-            fileWriter.write(System.lineSeparator());
+                String firstLine = "id,type,name,status,description,epic,duration,startTime,endTime";
+                fileWriter.write(firstLine + System.lineSeparator());
 
-            List<Task> arrayHistory = getHistory();
-            for (Task task : arrayHistory) {
-                fileWriter.write(task.getId().toString() + ",");
-            }
-            fileWriter.write(System.lineSeparator());
+                for (Task task : super.getListWithTasks()) {
+                    fileWriter.write(objectToString(task) + "," + System.lineSeparator());
+                }
+                for (Task task : super.getListWithEpics()) {
+                    fileWriter.write(objectToString((Epic) task) + "," + System.lineSeparator());
+                }
+                for (Task task : super.getListWithSubTasks()) {
+                    fileWriter.write(objectToString((SubTask) task) + "," + System.lineSeparator());
+                }
+                fileWriter.write(System.lineSeparator());
 
+                List<Task> arrayHistory = getHistory();
+                for (Task task : arrayHistory) {
+                    fileWriter.write(task.getId().toString() + ",");
+                }
+
+                fileWriter.write(System.lineSeparator());
+            }
             fileWriter.close();
         } catch (IOException e) {
             throw new ManagerSaveException("Exception when saving to file");
@@ -144,21 +148,21 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public Integer addNewTask(Task task) throws IOException {
+    public Integer addNewTask(Task task) {
         int count = super.addNewTask(task);
         save();
         return count;
     }
 
     @Override
-    public Integer addNewEpic(Epic epic) throws IOException {
+    public Integer addNewEpic(Epic epic) {
         int count = super.addNewEpic(epic);
         save();
         return count;
     }
 
     @Override
-    public Integer addNewSubTask(SubTask subTask) throws IOException {
+    public Integer addNewSubTask(SubTask subTask) {
         int count = super.addNewSubTask(subTask);
         save();
         return count;
@@ -186,55 +190,55 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void deleteAllTasks() throws IOException {
+    public void deleteAllTasks() {
         super.deleteAllTasks();
         save();
     }
 
     @Override
-    public void deleteAllEpics() throws IOException {
+    public void deleteAllEpics() {
         super.deleteAllEpics();
         save();
     }
 
     @Override
-    public void deleteAllSubTasks() throws IOException {
+    public void deleteAllSubTasks()  {
         super.deleteAllSubTasks();
         save();
     }
 
     @Override
-    public void updateTask(Task task) throws IOException {
+    public void updateTask(Task task) {
         super.updateTask(task);
         save();
     }
 
     @Override
-    public void updateStatusEpic(int id) throws IOException {
+    public void updateStatusEpic(int id) {
         super.updateStatusEpic(id);
         save();
     }
 
     @Override
-    public void updateSubTask(SubTask subTask) throws IOException {
+    public void updateSubTask(SubTask subTask) {
         super.updateSubTask(subTask);
         save();
     }
 
     @Override
-    public void deleteTaskById(int id) throws IOException {
+    public void deleteTaskById(int id) {
         super.deleteTaskById(id);
         save();
     }
 
     @Override
-    public void deleteEpicById(int id) throws IOException {
+    public void deleteEpicById(int id) {
         super.deleteEpicById(id);
         save();
     }
 
     @Override
-    public void deleteSubTaskById(int id) throws IOException {
+    public void deleteSubTaskById(int id) {
         super.deleteSubTaskById(id);
         save();
     }

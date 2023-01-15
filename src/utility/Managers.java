@@ -1,8 +1,8 @@
 package utility;
 
 import managerTask.FileBackedTasksManager;
-import history.HistoryManager;
-import history.InMemoryHistoryManager;
+import practicumBrachiiConverter.HistoryManager;
+import practicumBrachiiConverter.InMemoryHistoryManager;
 import managerTask.TaskManager;
 import managerTask.InMemoryTaskManager;
 
