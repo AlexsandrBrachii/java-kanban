@@ -1,17 +1,16 @@
-package managerTask;
+package ru.yandex.practicum.brachii.kanban.managerTask;
 
-import tasks.Epic;
-import tasks.SubTask;
-import tasks.Task;
+import ru.yandex.practicum.brachii.kanban.tasks.Epic;
+import ru.yandex.practicum.brachii.kanban.tasks.SubTask;
+import ru.yandex.practicum.brachii.kanban.tasks.Task;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeSet;
 
 public interface TaskManager {
 
-    void countingTimeForEpic(Epic epic);
+
     TreeSet<Task> getPrioritizedTasks();
 
     List<Task> getHistory();
@@ -42,7 +41,7 @@ public interface TaskManager {
 
     void updateTask(Task task);
 
-    void updateStatusEpic(int id);
+    void updateEpic(Epic epic);
 
     void updateSubTask(SubTask subTask);
 

@@ -1,6 +1,6 @@
-package managerTask;
+package ru.yandex.practicum.brachii.kanban.managerTask;
 
-import tasks.*;
+import ru.yandex.practicum.brachii.kanban.tasks.*;
 
 import java.io.*;
 import java.time.Duration;
@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static managerTask.Converter.*;
+import static ru.yandex.practicum.brachii.kanban.managerTask.Converter.*;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
 
@@ -214,8 +214,8 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateStatusEpic(int id) {
-        super.updateStatusEpic(id);
+    public void updateEpic(Epic epic) {
+        super.updateEpic(epic);
         save();
     }
 

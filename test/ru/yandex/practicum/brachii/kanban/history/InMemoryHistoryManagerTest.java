@@ -1,15 +1,13 @@
-package practicumBrachiiConverter;
+package ru.yandex.practicum.brachii.kanban.history;
 
-import managerTask.InMemoryTaskManager;
+import ru.yandex.practicum.brachii.kanban.managerTask.InMemoryTaskManager;
 import org.junit.jupiter.api.BeforeEach;
-import practicumBrachiiConverter.InMemoryHistoryManager;
 import org.junit.jupiter.api.Test;
-import tasks.Epic;
-import tasks.Status;
-import tasks.SubTask;
-import tasks.Task;
+import ru.yandex.practicum.brachii.kanban.tasks.Epic;
+import ru.yandex.practicum.brachii.kanban.tasks.Status;
+import ru.yandex.practicum.brachii.kanban.tasks.SubTask;
+import ru.yandex.practicum.brachii.kanban.tasks.Task;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

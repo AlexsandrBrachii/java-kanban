@@ -1,4 +1,4 @@
-package managerTask;
+package ru.yandex.practicum.brachii.kanban.managerTask;
 
 public class ManagerSaveException extends RuntimeException {
 

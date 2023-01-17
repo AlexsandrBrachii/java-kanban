@@ -1,4 +1,4 @@
-package tasks;
+package ru.yandex.practicum.brachii.kanban.tasks;
 
 
 import java.time.Duration;

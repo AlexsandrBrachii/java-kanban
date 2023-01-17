@@ -1,15 +1,14 @@
-package managerTask;
+package ru.yandex.practicum.brachii.kanban.managerTask;
 
-import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import practicumBrachiiConverter.HistoryManager;
-import tasks.Status;
-import tasks.Task;
-import tasks.Epic;
-import tasks.SubTask;
-import utility.Managers;
+import ru.yandex.practicum.brachii.kanban.history.HistoryManager;
+import ru.yandex.practicum.brachii.kanban.tasks.Status;
+import ru.yandex.practicum.brachii.kanban.tasks.Task;
+import ru.yandex.practicum.brachii.kanban.tasks.Epic;
+import ru.yandex.practicum.brachii.kanban.tasks.SubTask;
+import ru.yandex.practicum.brachii.kanban.utility.Managers;
 
 public class InMemoryTaskManager implements TaskManager {
 
@@ -18,25 +17,8 @@ public class InMemoryTaskManager implements TaskManager {
     protected HashMap<Integer, Epic> epics = new HashMap<>();
     protected HashMap<Integer, SubTask> subTasks = new HashMap<>();
     protected Integer identifier = 1;
-    private Comparator<Task> comparator = new Comparator<Task>() {
-        @Override
-        public int compare(Task o1, Task o2) {
-            if (o1.getStartTime() == null && o2.getStartTime() == null) {
-                return o1.getId().compareTo(o2.getId());
-            } else if (o1.getStartTime() == null) {
-                return 1;
-            } else if (o2.getStartTime() == null) {
-                return -1;
-            } else {
-                int result = o1.getStartTime().compareTo(o2.getStartTime());
-                if (result == 0) {
-                    return o1.getId().compareTo(o2.getId());
-                }
-                return result;
-            }
-        }
-    };
-    TreeSet<Task> sortedSet = new TreeSet<>(comparator);
+    private final TaskComparator taskComparator = new TaskComparator();
+    TreeSet<Task> sortedSet = new TreeSet<>(taskComparator);
     private final HistoryManager historyManager = Managers.getDefaultHistory();
 
 
@@ -81,7 +63,7 @@ public class InMemoryTaskManager implements TaskManager {
         return false;
     }
 
-    public void countingTimeForEpic(Epic epic) {
+    private void countingTimeForEpic(Epic epic) {
 
         for (Integer idSubtask : epic.idSubTask) {
             SubTask subTask = subTasks.get(idSubtask);
@@ -220,6 +202,7 @@ public class InMemoryTaskManager implements TaskManager {
             subTasks.put(identifier, subTask);
             sortedSet.add(subTask);
             epic.idSubTask.add(subTask.getId());
+            updateStatusEpic(epic.getId());
             countingTimeForEpic(epic);
             return identifier;
         }
@@ -236,7 +219,16 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void updateStatusEpic(int id) {
+    public void updateEpic(Epic epic) {
+
+        if (epic.getId() != null) {
+            if (epics.containsKey(epic.getId())) {
+                epics.put(epic.getId(), epic);
+            }
+        }
+    }
+
+    private void updateStatusEpic(int id) {
         if (epics.containsKey(id)) {
             Epic epic = epics.get(id);
             int sumNew = 0;

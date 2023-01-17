@@ -1,6 +1,6 @@
-package practicumBrachiiConverter;
+package ru.yandex.practicum.brachii.kanban.history;
 
-import tasks.Task;
+import ru.yandex.practicum.brachii.kanban.tasks.Task;
 
 import java.util.List;
 

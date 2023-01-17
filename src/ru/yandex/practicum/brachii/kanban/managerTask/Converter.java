@@ -1,7 +1,7 @@
-package managerTask;
+package ru.yandex.practicum.brachii.kanban.managerTask;
 
-import practicumBrachiiConverter.HistoryManager;
-import tasks.*;
+import ru.yandex.practicum.brachii.kanban.history.HistoryManager;
+import ru.yandex.practicum.brachii.kanban.tasks.*;
 
 import java.time.Duration;
 import java.time.LocalDateTime;

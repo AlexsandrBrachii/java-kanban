@@ -1,13 +1,12 @@
-package managerTask;
+package ru.yandex.practicum.brachii.kanban.managerTask;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import tasks.Epic;
-import tasks.Status;
-import tasks.SubTask;
-import tasks.Task;
+import ru.yandex.practicum.brachii.kanban.tasks.Epic;
+import ru.yandex.practicum.brachii.kanban.tasks.Status;
+import ru.yandex.practicum.brachii.kanban.tasks.SubTask;
+import ru.yandex.practicum.brachii.kanban.tasks.Task;
 
-import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -227,15 +226,15 @@ abstract class TaskManagerTest <T extends TaskManager> {
     }
 
     @Test
-    public void updateStatusEpic_checkResult_withNormalBehavior() {
-        int idEpic = manager.addNewEpic(new Epic("name", "description", Status.NEW, new ArrayList<>()));
-        int idSubTask = manager.addNewSubTask(new SubTask("name", "description", Status.IN_PROGRESS, idEpic,
-                Duration.ofMinutes(60), LocalDateTime.of(2022, 2, 2, 2, 30)));
+    public void updateEpic_checkResult_withNormalBehavior() {
+        Epic epic = new Epic("name", "description", Status.NEW, new ArrayList<>());
+        int idEpic = manager.addNewEpic(epic);
+        Epic epic1 = new Epic(idEpic,"name1", "description1", Status.NEW, new ArrayList<>());
 
-        manager.updateStatusEpic(idEpic);
-        Epic epic = manager.getEpicById(idEpic);
+        manager.updateEpic(epic1);
+        Epic epic2 = manager.getEpicById(idEpic);
 
-        assertEquals(Status.IN_PROGRESS, epic.getStatus(), "Обновление статуса не происходит.");
+        assertEquals(epic1, epic2, "Обновление Epic не произошло.");
     }
 
     @Test
@@ -269,15 +268,14 @@ abstract class TaskManagerTest <T extends TaskManager> {
     }
 
     @Test
-    public void updateStatusEpic_checkResult_withWrongId() {
+    public void updateEpic_checkResult_withWrongId() {
         int idEpic = manager.addNewEpic(new Epic("name", "description", Status.NEW, new ArrayList<>()));
-        int idSubTask = manager.addNewSubTask(new SubTask("name", "description", Status.IN_PROGRESS, idEpic,
-                Duration.ofMinutes(60), LocalDateTime.of(2022, 2, 2, 2, 30)));
+        Epic epic = new Epic(5,"name", "description", Status.NEW, new ArrayList<>());
 
-        manager.updateStatusEpic(5);
-        Epic epic = manager.getEpicById(idEpic);
+        manager.updateEpic(epic);
+        Epic epic1 = manager.getEpicById(idEpic);
 
-        assertEquals(Status.NEW, epic.getStatus(), "Обновление статуса происходит.");
+        assertNotEquals(epic1, epic, "Epic обновляется.");
     }
 
     @Test
@@ -393,21 +391,6 @@ abstract class TaskManagerTest <T extends TaskManager> {
     }
 
     @Test
-    public void countingTimeForEpic_checkResult_withEmptyListOfSubtask() {
-        Epic epic = new Epic("name", "description", Status.NEW, new ArrayList<>());
-
-        manager.countingTimeForEpic(epic);
-
-        LocalDateTime startTime = epic.getStartTime();
-        LocalDateTime endTime = epic.getEndTime();
-        Duration duration = epic.getDuration();
-
-        assertNull(startTime);
-        assertNull(endTime);
-        assertNull(duration);
-    }
-
-    @Test
     public void getPrioritizedTasks_checkResult_withNormalBehavior() {
         Task task = new Task("name", "description", Status.NEW,
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 2, 1, 1, 30));
@@ -430,8 +413,7 @@ abstract class TaskManagerTest <T extends TaskManager> {
     public void checkStatusEpic_IfThereAreNotSubtasks() {
         Epic epic = new Epic("name", "description", Status.NEW, new ArrayList<>());
 
-        int id = manager.addNewEpic(new Epic("name", "description", Status.NEW, new ArrayList<>()));
-        manager.updateStatusEpic(id);
+        int id = manager.addNewEpic(epic);
 
         assertEquals(Status.NEW, epic.getStatus());
     }
@@ -446,8 +428,6 @@ abstract class TaskManagerTest <T extends TaskManager> {
         manager.addNewSubTask(new SubTask("name", "description", Status.NEW, idEpic,
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 2, 2, 2, 30)));
 
-        manager.updateStatusEpic(idEpic);
-
         assertEquals(Status.NEW, epic.getStatus());
     }
 
@@ -460,7 +440,6 @@ abstract class TaskManagerTest <T extends TaskManager> {
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 1, 1, 30)));
         manager.addNewSubTask(new SubTask("name", "description", Status.DONE, idEpic,
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 2, 2, 2, 30)));
-        manager.updateStatusEpic(idEpic);
 
         assertEquals(Status.DONE, epic.getStatus());
     }
@@ -474,7 +453,6 @@ abstract class TaskManagerTest <T extends TaskManager> {
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 1, 1, 30)));
         manager.addNewSubTask(new SubTask("name", "description", Status.DONE, idEpic,
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 2, 2, 2, 30)));
-        manager.updateStatusEpic(idEpic);
 
         assertEquals(Status.IN_PROGRESS, epic.getStatus());
     }
@@ -488,7 +466,6 @@ abstract class TaskManagerTest <T extends TaskManager> {
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 1, 1, 1, 30)));
         manager.addNewSubTask(new SubTask("name", "description", Status.IN_PROGRESS, idEpic,
                 Duration.ofMinutes(60), LocalDateTime.of(2022, 2, 2, 2, 30)));
-        manager.updateStatusEpic(idEpic);
 
         assertEquals(Status.IN_PROGRESS, epic.getStatus());
     }
