@@ -49,6 +49,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
 
         FileBackedTasksManager b = new FileBackedTasksManager(new File("src/History.txt"));
+
     }
 
 
@@ -83,7 +84,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             }
             fileWriter.close();
         } catch (IOException e) {
-            throw new ManagerSaveException("Exception when saving to file");
+            throw new ManagerSaveException("Exception при сохранении в файл.");
         }
     }
 

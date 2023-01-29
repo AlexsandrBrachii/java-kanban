@@ -151,7 +151,6 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteAllTasks() {
         tasks.clear();
-
     }
 
     @Override
