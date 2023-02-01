@@ -17,18 +17,18 @@ public class KVTaskClient {
 
     public KVTaskClient(URL url) throws IOException {
         this.urlKVServer = url;
-        this.apiToken = register(url);
+        this.apiToken = register();
     }
 
-    private String register(URL url) throws IOException {
+    private String register() throws IOException {
         String token = "";
         try {
             HttpClient client = HttpClient.newHttpClient();
-            URI uri = url.toURI();
+            URI uri = URI.create(urlKVServer + "/register");
             HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             token = response.body();
-        } catch (URISyntaxException | InterruptedException e) {
+        } catch (InterruptedException e) {
             e.getMessage();
         }
         return token;
@@ -37,7 +37,7 @@ public class KVTaskClient {
     public void put(String key, String json) {
         try {
             HttpClient client = HttpClient.newHttpClient();
-            URI uri = URI.create("http://localhost:8078/save/" + key + "?API_TOKEN=" + apiToken);
+            URI uri = URI.create(urlKVServer + "/save/" + key + "?API_TOKEN=" + apiToken);
             HttpRequest.BodyPublisher body = HttpRequest.BodyPublishers.ofString(json);
             HttpRequest request = HttpRequest.newBuilder().uri(uri).POST(body).build();
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
@@ -50,7 +50,7 @@ public class KVTaskClient {
         String response = "";
         try {
             HttpClient client = HttpClient.newHttpClient();
-            URI uri = URI.create("http://localhost:8078/load/" + key + "?API_TOKEN=" + apiToken);
+            URI uri = URI.create(urlKVServer + "/load/" + key + "?API_TOKEN=" + apiToken);
             HttpRequest request = HttpRequest.newBuilder().uri(uri).GET().build();
             HttpResponse<String> responseHttp = client.send(request, HttpResponse.BodyHandlers.ofString());
             response = responseHttp.body();

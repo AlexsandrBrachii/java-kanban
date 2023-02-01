@@ -10,6 +10,8 @@ import ru.yandex.practicum.brachii.kanban.tasks.Epic;
 import ru.yandex.practicum.brachii.kanban.tasks.SubTask;
 import ru.yandex.practicum.brachii.kanban.utility.Managers;
 
+import static ru.yandex.practicum.brachii.kanban.utility.Managers.getDefaultHistory;
+
 public class InMemoryTaskManager implements TaskManager {
 
 
@@ -19,7 +21,7 @@ public class InMemoryTaskManager implements TaskManager {
     protected Integer identifier = 1;
     private final TaskComparator taskComparator = new TaskComparator();
     TreeSet<Task> sortedSet = new TreeSet<>(taskComparator);
-    private final HistoryManager historyManager = Managers.getDefaultHistory();
+    private final HistoryManager historyManager = getDefaultHistory();
 
 
     public TreeSet<Task> getPrioritizedTasks() {
@@ -151,12 +153,28 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void deleteAllTasks() {
         tasks.clear();
+
+        List<Task> objectsToRemove = new ArrayList<>();
+        for (Task obj : sortedSet) {
+            if (!(obj instanceof Epic) && !(obj instanceof SubTask)) {
+                objectsToRemove.add(obj);
+            }
+        }
+        sortedSet.removeAll(objectsToRemove);
     }
 
     @Override
     public void deleteAllEpics() {
         epics.clear();
         subTasks.clear();
+
+        List<Task> objectsToRemove = new ArrayList<>();
+        for (Task obj : sortedSet) {
+            if (obj instanceof Epic || obj instanceof SubTask) {
+                objectsToRemove.add(obj);
+            }
+        }
+        sortedSet.removeAll(objectsToRemove);
     }
 
     @Override
@@ -167,6 +185,14 @@ public class InMemoryTaskManager implements TaskManager {
             epic.getIdSubTask().clear();
         }
         subTasks.clear();
+
+        List<Task> objectsToRemove = new ArrayList<>();
+        for (Task obj : sortedSet) {
+            if (obj instanceof SubTask) {
+                objectsToRemove.add(obj);
+            }
+        }
+        sortedSet.removeAll(objectsToRemove);
     }
 
     @Override

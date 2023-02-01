@@ -51,25 +51,31 @@ public class InMemoryHistoryManager implements HistoryManager {
 
     private void removeNode(Node node) {
 
-        Node nodePrev = node.getPrev();
-        Node nodeNext = node.getNext();
-        int id = node.data.getId();
-
-        if (nodePrev == null && nodeNext != null) {
-            nodeNext.prev = null;
-            head = nodeNext;
-        } else if (nodeNext == null && nodePrev != null) {
-            nodePrev.next = null;
-            tail = nodePrev;
-        } else if (nodeNext != null && nodePrev != null) {
-            node.data = null;
-            nodePrev.next = nodeNext;
-            nodeNext.prev = nodePrev;
+        if (node == null) {
+            System.out.println("нода истории пуста");
+        } else if (!nodes.containsKey(node.getData().getId())) {
+            System.out.println("нода истории не обнаружена");
         } else {
-            node.data = null;
+            Node nodePrev = node.getPrev();
+            Node nodeNext = node.getNext();
+            int id = node.data.getId();
+
+            if (nodePrev == null && nodeNext != null) {
+                nodeNext.prev = null;
+                head = nodeNext;
+            } else if (nodeNext == null && nodePrev != null) {
+                nodePrev.next = null;
+                tail = nodePrev;
+            } else if (nodeNext != null && nodePrev != null) {
+                node.data = null;
+                nodePrev.next = nodeNext;
+                nodeNext.prev = nodePrev;
+            } else {
+                node.data = null;
+            }
+            nodes.remove(id);
+            size--;
         }
-        nodes.remove(id);
-        size--;
     }
 
     @Override

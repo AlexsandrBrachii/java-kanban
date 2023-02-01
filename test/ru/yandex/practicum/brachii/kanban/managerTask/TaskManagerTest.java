@@ -7,6 +7,8 @@ import ru.yandex.practicum.brachii.kanban.tasks.Status;
 import ru.yandex.practicum.brachii.kanban.tasks.SubTask;
 import ru.yandex.practicum.brachii.kanban.tasks.Task;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -17,12 +19,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 abstract class TaskManagerTest <T extends TaskManager> {
 
-    public abstract T createManager();
+    public abstract T createManager() throws IOException;
 
     private T manager;
 
     @BeforeEach
-    void beforeEach() {
+    void beforeEach() throws IOException {
         manager = createManager();
     }
 

@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 public class SubTask extends Task {
 
 
-    private static Integer idEpic;
+    private Integer idEpic;
 
     public SubTask(Integer id, String name, String description, Status status, Integer idEpic) {
         super(id, name, description, status);
@@ -24,7 +24,7 @@ public class SubTask extends Task {
     }
 
 
-    public static Integer getIdEpic() {
+    public Integer getIdEpic() {
         return idEpic;
     }
 
