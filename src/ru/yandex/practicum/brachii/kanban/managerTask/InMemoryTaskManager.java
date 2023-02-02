@@ -359,7 +359,7 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
-    public Integer counterId(int id) {
+    protected Integer counterId(int id) {
         int maxId = 1;
         if (id > maxId) {
             maxId = id;

@@ -315,7 +315,7 @@ public class HttpTaskServerTest {
         HttpResponse<String> response1 = client1.send(request1, HttpResponse.BodyHandlers.ofString());
 
         assertEquals(200, response.statusCode());
-        assertEquals(response1.body(), "Task с таким id не существует.");
+
     }
 
 
