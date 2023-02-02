@@ -218,9 +218,8 @@ public class HttpTaskServer {
                 String[] params = query.split("id=");
                 try {
                     id = Integer.parseInt(params[1]);
-                    ArrayList<Task> tasks = manager.getListWithTasks();
 
-                    for (Task task : tasks) {
+                    for (Task task : manager.getListWithTasks()) {
                         if (task.getId() == id) {
                             manager.deleteTaskById(id);
                             response = "Task с id=" + id + " удалена.";

@@ -94,5 +94,6 @@ public class HttpTaskManagerTest extends TaskManagerTest<HttpTaskManager> {
         assertNotNull(manager1.tasks);
         assertNotNull(manager1.epics);
         assertNotNull(manager1.subTasks);
+        assertNotNull(manager1.sortedSet);
     }
 }

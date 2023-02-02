@@ -358,6 +358,18 @@ public class InMemoryTaskManager implements TaskManager {
             }
         }
     }
+
+    public Integer counterId(int id) {
+        int maxId = 1;
+        if (id > maxId) {
+            maxId = id;
+        }
+        return maxId;
+    }
+
+    public void setIdentifier(Integer identifier) {
+        this.identifier = identifier;
+    }
 }
 
 

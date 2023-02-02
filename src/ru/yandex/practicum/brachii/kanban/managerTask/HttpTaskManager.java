@@ -65,6 +65,7 @@ public class HttpTaskManager extends FileBackedTasksManager {
 
         Gson json = new Gson();
         HttpTaskManager manager = new HttpTaskManager();
+        int maxId = 1;
 
         String jsonWithTasks = taskClient.load("task");
         String jsonWithEpics = taskClient.load("epic");
@@ -76,24 +77,31 @@ public class HttpTaskManager extends FileBackedTasksManager {
             List<Task> taskList = json.fromJson(jsonWithTasks, listTypeTask);
             for (Task task : taskList) {
                 manager.tasks.put(task.getId(), task);
+                manager.sortedSet.add(task);
+                maxId = manager.counterId(task.getId());
             }
         }
 
         if (!jsonWithEpics.isEmpty()) {
             Type listTypeEpic = new TypeToken<ArrayList<Epic>>() {}.getType();
-            List<Task> epicList = json.fromJson(jsonWithEpics, listTypeEpic);
-            for (Task epic : epicList) {
-                manager.epics.put(epic.getId(), (Epic) epic);
+            List<Epic> epicList = json.fromJson(jsonWithEpics, listTypeEpic);
+            for (Epic epic : epicList) {
+                manager.epics.put(epic.getId(), epic);
+                maxId = manager.counterId(epic.getId());
             }
         }
 
         if (!jsonWithSubtask.isEmpty()) {
             Type listTypeSubtask = new TypeToken<ArrayList<SubTask>>() {}.getType();
-            List<Task> subtaskList = json.fromJson(jsonWithSubtask, listTypeSubtask);
-            for (Task subtask : subtaskList) {
-                manager.subTasks.put(subtask.getId(), (SubTask) subtask);
+            List<SubTask> subtaskList = json.fromJson(jsonWithSubtask, listTypeSubtask);
+            for (SubTask subtask : subtaskList) {
+                manager.subTasks.put(subtask.getId(), subtask);
+                manager.sortedSet.add(subtask);
+                maxId = manager.counterId(subtask.getId());
             }
         }
+
+        manager.setIdentifier(maxId);
 
         if (!jsonWithHistory.isEmpty()) {
             String[] history = jsonWithHistory.split(",");
@@ -110,6 +118,8 @@ public class HttpTaskManager extends FileBackedTasksManager {
         }
         return manager;
     }
+
+
 
 
 }
